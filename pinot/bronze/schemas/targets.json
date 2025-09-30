@@ -1,0 +1,23 @@
+{
+  "schemaName": "targets_cdc",
+  "dimensionFieldSpecs": [
+    {"name": "id", "dataType": "STRING"},
+    {"name": "target_id", "dataType": "STRING"},
+    {"name": "target_type", "dataType": "STRING"},
+    {"name": "domain", "dataType": "STRING"},
+    {"name": "estimated_intent", "dataType": "STRING"},
+    {"name": "threat_level", "dataType": "STRING"},
+    {"name": "iff_status", "dataType": "STRING"},
+    {"name": "classification", "dataType": "STRING"},
+    {"name": "src", "dataType": "STRING"}
+  ],
+  "metricFieldSpecs": [],
+  "dateTimeFieldSpecs": [
+    {
+      "name": "ingest_timestamp_millis",
+     "dataType": "TIMESTAMP",
+      "format": "TIMESTAMP",
+      "granularity": "1:MILLISECONDS"
+    }
+  ]
+}

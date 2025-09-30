@@ -1,0 +1,35 @@
+{
+  "tableName": "gold_logistics_readiness",
+  "tableType": "REALTIME",
+  "segmentsConfig": {
+    "timeColumnName": "timestamp",
+    "timeType": "MILLISECONDS",
+    "replicasPerPartition": "1"
+  },
+  "tableIndexConfig": {
+    "loadMode": "MMAP",
+    "realtime.segment.flush.threshold.rows": "50000",
+    "streamConfigs": {
+      "streamType": "kafka",
+      "stream.kafka.topic.name": "gold.logistics_readiness",
+      "stream.kafka.bootstrap.servers": "kafka:9092",
+      "stream.kafka.consumer.prop.auto.offset.reset": "smallest",
+      "stream.kafka.decoder.class.name": "org.apache.pinot.plugin.stream.kafka20.KafkaJSONMessageDecoder"
+    },
+
+    "invertedIndexColumns": ["unit_id", "region_id", "resupply_feasibility"],
+    "sortedColumn": "timestamp",
+    "rangeIndexColumns": ["supply_level", "projected_supply"],
+    "textIndexColumns": []
+  },
+    "ingestionConfig": {
+        "transformConfigs": [
+            {"columnName": "unit_id", "transformFunction": "jsonPathString(message, '$.unit_id')"},
+            {"columnName": "region_id", "transformFunction": "jsonPathString(message, '$.region_id')"},
+            {"columnName": "supply_level", "transformFunction": "jsonPathString(message, '$.supply_level')"},
+            {"columnName": "projected_supply", "transformFunction": "jsonPathString(message, '$.projected_supply')"},
+            {"columnName": "resupply_feasibility", "transformFunction": "jsonPathString(message, '$.resupply_feasibility')"},
+            {"columnName": "timestamp", "transformFunction": "jsonPathLong(message, '$.timestamp')"}
+        ]
+    }
+}

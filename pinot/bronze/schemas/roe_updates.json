@@ -1,0 +1,15 @@
+{
+  "schemaName": "roe_updates_cdc",
+  "dimensionFieldSpecs": [
+    {"name": "id","dataType": "STRING"},
+    {"name": "rules","dataType": "STRING"},
+    {"name": "src", "dataType": "STRING"}
+  ],
+  "metricFieldSpecs": [],
+  "dateTimeFieldSpecs": [
+    {"name": "event_time_millis","dataType": "TIMESTAMP",
+      "format": "TIMESTAMP","granularity":"1:MILLISECONDS"},
+    {"name": "ingest_timestamp_millis","dataType": "TIMESTAMP",
+      "format": "TIMESTAMP","granularity":"1:MILLISECONDS"}
+  ]
+}

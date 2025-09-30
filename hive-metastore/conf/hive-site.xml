@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<?xml-stylesheet type="text/xsl" href="configuration.xsl"?>
+<!-- These are default values meant to allow easy smoke testing of the metastore.  You will
+likely need to add a number of new values. -->
+<configuration>
+  <property>
+    <name>metastore.thrift.uris</name>
+    <value>thrift://hms.jadc2:9083</value>
+  </property>
+  <!-- Add Materialization stuff for standalone metastore -->
+  <property>
+    <name>metastore.task.threads.always</name>
+    <value>org.apache.hadoop.hive.metastore.events.EventCleanerTask</value>
+  </property>
+  <property>
+    <name>metastore.expression.proxy</name>
+    <value>org.apache.hadoop.hive.metastore.DefaultPartitionExpressionProxy</value>
+  </property>
+
+  <!-- postgresql is backend db for hms -->
+  <property>
+    <name>javax.jdo.option.ConnectionURL</name>
+    <value>jdbc:postgresql://hms-db:5432/hms</value>
+  </property>
+  <property>
+    <name>javax.jdo.option.ConnectionDriverName</name>
+    <value>org.postgresql.Driver</value>
+  </property>
+  <property>
+    <name>javax.jdo.option.ConnectionUserName</name>
+    <value>hive</value>
+  </property>
+  <property>
+    <name>javax.jdo.option.ConnectionPassword</name>
+    <value>hive</value>
+  </property>
+
+   <!-- Warehouse (point to s3a path) -->
+  <property>
+    <name>hive.metastore.warehouse.dir</name>
+    <value>s3a://warehouse/</value>
+  </property>
+
+  <!-- Derby embedded DB-->
+  <!-- <property>
+    <name>javax.jdo.option.ConnectionURL</name>
+    <value>jdbc:derby:;databaseName=/tmp/metastore_db;create=true</value>
+  </property>
+  <property>
+    <name>javax.jdo.option.ConnectionDriverName</name>
+    <value>org.apache.derby.jdbc.EmbeddedDriver</value>
+  </property> -->
+
+  <!-- minIO config -->
+  <property>
+      <name>fs.s3a.access.key</name>
+      <value>admin</value>
+  </property>
+
+  <property>
+      <name>fs.s3a.secret.key</name>
+      <value>password</value>
+  </property>
+
+  <property>
+      <name>fs.s3a.endpoint</name>
+      <value>http://minio:9000</value>
+  </property>
+
+  <property>
+      <name>fs.s3a.path.style.access</name>
+      <value>true</value>
+  </property>
+
+</configuration>

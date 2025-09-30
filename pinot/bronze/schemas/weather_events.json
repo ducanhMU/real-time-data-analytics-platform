@@ -1,0 +1,28 @@
+{
+  "schemaName": "weather_events_cdc",
+  "dimensionFieldSpecs": [
+    {"name": "id", "dataType": "STRING"},
+    {"name": "region_id", "dataType": "STRING"},
+    {"name": "type", "dataType": "STRING"},
+    {"name": "src", "dataType": "STRING"}
+  ],
+  "metricFieldSpecs": [
+    {"name": "intensity", "dataType": "BIG_DECIMAL"},
+    {"name": "wind_speed_kmh", "dataType": "BIG_DECIMAL"},
+    {"name": "precipitation_mm", "dataType": "BIG_DECIMAL"}
+  ],
+  "dateTimeFieldSpecs": [
+    {
+      "name": "event_time_millis",
+     "dataType": "TIMESTAMP",
+      "format": "TIMESTAMP",
+      "granularity": "1:MILLISECONDS"
+    },
+    {
+      "name": "ingest_timestamp_millis",
+      "dataType": "TIMESTAMP",
+      "format": "TIMESTAMP",
+      "granularity": "1:MILLISECONDS"
+    }
+  ]
+}

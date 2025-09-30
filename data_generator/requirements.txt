@@ -1,0 +1,3 @@
+psycopg2-binary==2.9.10
+faker==22.2.0
+# if a library is not a built-in python module, then add it here to install

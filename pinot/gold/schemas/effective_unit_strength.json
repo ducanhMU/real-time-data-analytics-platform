@@ -1,0 +1,23 @@
+{
+  "schemaName": "gold_effective_unit_strength",
+  "dimensionFieldSpecs": [
+    {"name": "unit_id", "dataType": "STRING"},
+    {"name": "region_id", "dataType": "STRING"},
+    {"name": "weapon_id", "dataType": "STRING"}
+  ],
+  "metricFieldSpecs": [
+    {"name": "terrain_factor", "dataType": "BIG_DECIMAL"},
+    {"name": "effective_range_km", "dataType": "BIG_DECIMAL"},
+    {"name": "adjusted_hit_probability", "dataType": "BIG_DECIMAL"},
+    {"name": "attacking_strength", "dataType": "BIG_DECIMAL"}
+  ],
+  "timeFieldSpec": {
+    "name": "timestamp",
+    "dataType": "TIMESTAMP",
+    "incomingGranularitySpec": {
+      "dataType": "MILLISECONDS",
+      "timeFormat": "1:MILLISECONDS:EPOCH",
+      "timeUnit": "MILLISECONDS"
+    }
+  }
+}

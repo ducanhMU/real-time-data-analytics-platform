@@ -1,0 +1,38 @@
+{
+  "tableName": "gold_engagement_analysis",
+  "tableType": "REALTIME",
+  "segmentsConfig": {
+    "timeColumnName": "timestamp",
+    "timeType": "MILLISECONDS",
+    "replicasPerPartition": "1"
+  },
+  "tableIndexConfig": {
+    "loadMode": "MMAP",
+    "realtime.segment.flush.threshold.rows": "50000",
+    "streamConfigs": {
+      "streamType": "kafka",
+      "stream.kafka.topic.name": "gold.engagement_analysis",
+      "stream.kafka.bootstrap.servers": "kafka:9092",
+      "stream.kafka.consumer.prop.auto.offset.reset": "smallest",
+      "stream.kafka.decoder.class.name": "org.apache.pinot.plugin.stream.kafka20.KafkaJSONMessageDecoder"
+    },
+
+    "invertedIndexColumns": ["engagement_id", "attacker_id", "target_id", "weapon_id", "region_id"],
+    "sortedColumn": "timestamp",
+    "rangeIndexColumns": ["adjusted_hit_probability", "impact_factor"],
+    "textIndexColumns": ["result"]
+  },
+    "ingestionConfig": {
+        "transformConfigs": [
+            {"columnName": "engagement_id", "transformFunction": "jsonPathString(message, '$.engagement_id')"},
+            {"columnName": "attacker_id", "transformFunction": "jsonPathString(message, '$.attacker_id')"},
+            {"columnName": "target_id", "transformFunction": "jsonPathString(message, '$.target_id')"},
+            {"columnName": "weapon_id", "transformFunction": "jsonPathString(message, '$.weapon_id')"},  
+            {"columnName": "region_id", "transformFunction": "jsonPathString(message, '$.region_id')"},
+            {"columnName": "result", "transformFunction": "jsonPathLong(message, '$.result')"},
+            {"columnName": "adjusted_hit_probabilities", "transformFunction": "jsonPathLong(message, '$.adjusted_hit_probabilities')"},
+            {"columnName": "impact_factor", "transformFunction": "jsonPathLong(message, '$.impact_factor')"},
+            {"columnName": "timestamp", "transformFunction": "jsonPathLong(message, '$.timestamp')"}
+        ]
+    }
+}

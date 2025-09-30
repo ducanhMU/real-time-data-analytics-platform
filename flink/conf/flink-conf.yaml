@@ -1,0 +1,15 @@
+# Number of task slots per TaskManager
+taskmanager.numberOfTaskSlots: 20
+
+# Memory configs (tune dependingon workload)
+taskmanager.memory.process.size: 4096m
+jobmanager.memory.process.size: 4096m
+
+# Default parallelism for jobs
+parallelism.default: 1
+
+# Enable checkpointing every 30s (important for streaming jobs)
+execution.checkpointing.interval: 30s
+
+# Keep 3 checkpoints
+state.checkpoints.num-retained: 3

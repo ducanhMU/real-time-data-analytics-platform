@@ -1,0 +1,51 @@
+{  
+  "tableName": "alerts_cdc",  
+  "tableType": "REALTIME",  
+  "segmentsConfig": {  
+    "timeColumnName": "created_at_millis",  
+    "timeType": "MILLISECONDS",  
+    "schemaName": "alerts_cdc",  
+    "retentionTimeUnit": "DAYS",  
+    "retentionTimeValue": "30",  
+    "segmentPushType": "APPEND",  
+    "segmentAssignmentStrategy": "BalanceNumSegmentAssignmentStrategy",  
+    "replicasPerPartition": "1"  
+  },  
+  "tenants": {  
+    "broker": "DefaultTenant",  
+    "server": "DefaultTenant"  
+  },  
+  "tableIndexConfig": {
+    "loadMode": "MMAP"
+  },
+  
+  "ingestionConfig": {  
+    "streamIngestionConfig": {  
+      "streamConfigMaps": [{  
+        "streamType": "kafka",  
+        "stream.kafka.topic.name": "jadc2_unwrap.raw.alerts",  
+        "stream.kafka.broker.list": "kafka:9092",  
+        "stream.kafka.consumer.factory.class.name": "org.apache.pinot.plugin.stream.kafka20.KafkaConsumerFactory",  
+        "stream.kafka.consumer.prop.auto.offset.reset": "smallest",  
+        "stream.kafka.consumer.type": "lowLevel",  
+        "stream.kafka.consumer.group.id": "pinot",  
+        "stream.kafka.decoder.class.name": "org.apache.pinot.plugin.inputformat.json.JSONMessageDecoder",  
+        "realtime.segment.flush.threshold.segment.rows": "500000",  
+        "realtime.segment.flush.threshold.time": "3600000"  
+      }]  
+    },  
+    "transformConfigs": [     
+     {
+        "columnName": "created_at_millis",
+        "transformFunction": "DATETIMECONVERT(created_at, '1:MILLISECONDS:SIMPLE_DATE_FORMAT:yyyy-MM-dd''T''HH:mm:ss.SSSSSS''Z''', '1:MILLISECONDS:EPOCH', '1:MILLISECONDS')"
+      },
+      {
+        "columnName": "ingest_timestamp_millis",
+        "transformFunction": "DATETIMECONVERT(ingest_timestamp, '1:MILLISECONDS:SIMPLE_DATE_FORMAT:yyyy-MM-dd''T''HH:mm:ss.SSSSSS''Z''', '1:MILLISECONDS:EPOCH', '1:MILLISECONDS')"
+      }
+    ] 
+  },  
+  "metadata": {  
+    "customConfigs": {}  
+  }  
+}

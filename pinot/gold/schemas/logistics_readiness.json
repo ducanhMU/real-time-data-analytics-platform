@@ -1,0 +1,21 @@
+{
+  "schemaName": "gold_logistics_readiness",
+  "dimensionFieldSpecs": [
+    {"name": "unit_id", "dataType": "STRING"},
+    {"name": "region_id", "dataType": "STRING"}
+  ],
+  "metricFieldSpecs": [
+    {"name": "supply_level", "dataType": "BIG_DECIMAL"},
+    {"name": "projected_supply", "dataType": "BIG_DECIMAL"},
+    {"name": "resupply_feasibility", "dataType": "INT"}
+  ],
+  "timeFieldSpec": {
+    "name": "timestamp",
+    "dataType": "TIMESTAMP",
+    "incomingGranularitySpec": {
+      "dataType": "MILLISECONDS",
+      "timeFormat": "1:MILLISECONDS:EPOCH",
+      "timeUnit": "MILLISECONDS"
+    }
+  }
+}

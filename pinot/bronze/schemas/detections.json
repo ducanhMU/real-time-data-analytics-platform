@@ -1,0 +1,35 @@
+{
+  "schemaName": "detections_cdc",
+  "dimensionFieldSpecs": [
+    {"name": "id", "dataType": "STRING"},
+    {"name": "sensor_id", "dataType": "STRING"},
+    {"name": "target_id", "dataType": "STRING"},
+    {"name": "target_domain", "dataType": "STRING"},
+    {"name": "region_id", "dataType": "STRING"},
+    {"name": "iff_status", "dataType": "STRING"},
+    {"name": "threat_level", "dataType": "STRING"},
+    {"name": "src", "dataType": "STRING"}
+  ],
+  "metricFieldSpecs": [
+    {"name": "lat", "dataType": "BIG_DECIMAL"},
+    {"name": "lon", "dataType": "BIG_DECIMAL"},
+    {"name": "altitude_depth", "dataType": "BIG_DECIMAL"},
+    {"name": "speed_kmh", "dataType": "BIG_DECIMAL"},
+    {"name": "heading_deg", "dataType": "BIG_DECIMAL"},
+    {"name": "confidence", "dataType": "BIG_DECIMAL"}
+  ],
+  "dateTimeFieldSpecs": [
+    {
+      "name": "event_time_millis",
+     "dataType": "TIMESTAMP",
+      "format": "TIMESTAMP",
+      "granularity": "1:MILLISECONDS"
+    },
+    {
+      "name": "ingest_timestamp_millis",
+     "dataType": "TIMESTAMP",
+      "format": "TIMESTAMP",
+      "granularity": "1:MILLISECONDS"
+    }
+  ]
+}

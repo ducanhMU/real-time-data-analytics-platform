@@ -1,0 +1,37 @@
+{
+  "tableName": "gold_alerts_with_commands",
+  "tableType": "REALTIME",
+  "segmentsConfig": {
+    "timeColumnName": "timestamp",
+    "timeType": "MILLISECONDS",
+    "replicasPerPartition": "1"
+  },
+  "tableIndexConfig": {
+    "loadMode": "MMAP",
+    "realtime.segment.flush.threshold.rows": "50000",
+    "streamConfigs": {
+      "streamType": "kafka",
+      "stream.kafka.topic.name": "gold.alerts_with_commands",
+      "stream.kafka.bootstrap.servers": "kafka:9092",
+      "stream.kafka.consumer.prop.auto.offset.reset": "smallest",
+      "stream.kafka.decoder.class.name": "org.apache.pinot.plugin.stream.kafka20.KafkaJSONMessageDecoder"
+    },
+
+    "invertedIndexColumns": ["alert_id", "detection_id", "region_id", "user_id"],
+    "sortedColumn": "timestamp",
+    "rangeIndexColumns": [],
+    "textIndexColumns": ["action"]
+  },
+  "ingestionConfig": {
+    "transformConfigs": [
+      {"columnName": "alert_id", "transformFunction": "jsonPathString(message, '$.alert_id')"},
+      {"columnName": "detection_id", "transformFunction": "jsonPathString(message, '$.detection_id')"},
+      {"columnName": "region_id", "transformFunction": "jsonPathString(message, '$.region_id')"},
+      {"columnName": "threat_level", "transformFunction": "jsonPathString(message, '$.threat_level')"},
+      {"columnName": "command_id", "transformFunction": "jsonPathString(message, '$.command_id')"},
+      {"columnName": "action", "transformFunction": "jsonPathString(message, '$.action')"},
+      {"columnName": "user_id", "transformFunction": "jsonPathString(message, '$.user_id')"},
+      {"columnName": "timestamp", "transformFunction": "jsonPathLong(message, '$.timestamp')"}
+    ]
+  }
+}

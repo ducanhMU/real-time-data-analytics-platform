@@ -1,0 +1,21 @@
+{
+  "schemaName": "units_cdc",
+  "dimensionFieldSpecs": [
+    {"name": "id", "dataType": "STRING"},
+    {"name": "name", "dataType": "STRING"},
+    {"name": "domain", "dataType": "STRING"},
+    {"name": "unit_type", "dataType": "STRING"},
+    {"name": "status", "dataType": "STRING"},
+    {"name": "classification", "dataType": "STRING"},
+    {"name": "src", "dataType": "STRING"}
+  ],
+  "metricFieldSpecs": [],
+  "dateTimeFieldSpecs": [
+    {
+      "name": "ingest_timestamp_millis",
+      "dataType": "TIMESTAMP",
+      "format": "TIMESTAMP",
+      "granularity": "1:MILLISECONDS"
+    }
+  ]
+}

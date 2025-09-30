@@ -1,0 +1,26 @@
+{
+  "schemaName": "alerts_cdc",
+  "dimensionFieldSpecs": [
+    {"name": "id", "dataType": "STRING"},
+    {"name": "detection_id", "dataType": "STRING"},
+    {"name": "status", "dataType": "STRING"},
+    {"name": "msg", "dataType": "STRING"},
+    {"name": "threat_level", "dataType": "STRING"},
+    {"name": "src", "dataType": "STRING"}
+  ],
+  "metricFieldSpecs": [],
+  "dateTimeFieldSpecs": [
+    {
+      "name": "created_at_millis",
+      "dataType": "TIMESTAMP",
+      "format": "TIMESTAMP",
+      "granularity": "1:MILLISECONDS"
+    },
+    {
+      "name": "ingest_timestamp_millis",
+      "dataType": "TIMESTAMP",
+      "format": "TIMESTAMP",
+      "granularity": "1:MILLISECONDS"
+    }
+  ]
+}

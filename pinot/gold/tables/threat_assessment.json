@@ -1,0 +1,37 @@
+{
+  "tableName": "gold_threat_assessment",
+  "tableType": "REALTIME",
+  "segmentsConfig": {
+    "timeColumnName": "timestamp",
+    "timeType": "MILLISECONDS",
+    "replicasPerPartition": "1"
+  },
+  "tableIndexConfig": {
+    "loadMode": "MMAP",
+    "realtime.segment.flush.threshold.rows": "100000",
+    "streamConfigs": {
+      "streamType": "kafka",
+      "stream.kafka.topic.name": "gold.threat_assessment",
+      "stream.kafka.bootstrap.servers": "kafka:9092",
+      "stream.kafka.consumer.prop.auto.offset.reset": "smallest",
+      "stream.kafka.decoder.class.name": "org.apache.pinot.plugin.stream.kafka20.KafkaJSONMessageDecoder"
+    },
+
+    "invertedIndexColumns": ["target_id", "region_id", "iff_status", "predicted_threat"],
+    "sortedColumn": "timestamp",
+    "rangeIndexColumns": ["adjusted_confidence", "distance_km", "response_time_sec"],
+    "textIndexColumns": []
+  },
+    "ingestionConfig": {
+        "transformConfigs": [
+        {"columnName": "target_id", "transformFunction": "jsonPathString(message, '$.target_id')"},
+        {"columnName": "region_id", "transformFunction": "jsonPathString(message, '$.region_id')"},
+        {"columnName": "iff_status", "transformFunction": "jsonPathString(message, '$.iff_status')"},
+        {"columnName": "adjusted_confidence", "transformFunction": "jsonPathDouble(message, '$.adjusted_confidence')"},
+        {"columnName": "predicted_threat", "transformFunction": "jsonPathString(message, '$.predicted_threat')"},
+        {"columnName": "distance_km", "transformFunction": "jsonPathDouble(message, '$.distance_km')"},
+        {"columnName": "response_time_sec", "transformFunction": "jsonPathDouble(message, '$.response_time_sec')"},
+        {"columnName": "timestamp", "transformFunction": "jsonPathLong(message, '$.timestamp')"}
+      ]
+    }
+}

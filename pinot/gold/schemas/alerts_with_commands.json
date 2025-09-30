@@ -1,0 +1,24 @@
+{
+  "schemaName": "gold_alerts_with_commands",
+  "dimensionFieldSpecs": [
+    {"name": "alert_id", "dataType": "STRING"},
+    {"name": "detection_id", "dataType": "STRING"},
+    {"name": "region_id", "dataType": "STRING"},
+    {"name": "command_id", "dataType": "STRING"},
+    {"name": "user_id", "dataType": "STRING"}
+  ],
+  "metricFieldSpecs": [],
+  "singleValueFieldSpecs": [
+    {"name": "threat_level", "dataType": "STRING"},
+    {"name": "action", "dataType": "STRING"}
+  ],
+  "timeFieldSpec": {
+    "name": "timestamp",
+    "dataType": "TIMESTAMP",
+    "incomingGranularitySpec": {
+      "dataType": "MILLISECONDS",
+      "timeFormat": "1:MILLISECONDS:EPOCH",
+      "timeUnit": "MILLISECONDS"
+    }
+  }
+}

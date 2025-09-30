@@ -1,0 +1,24 @@
+{
+  "schemaName": "weapons_cdc",
+  "dimensionFieldSpecs": [
+    {"name": "id", "dataType": "STRING"},
+    {"name": "unit_id", "dataType": "STRING"},
+    {"name": "name", "dataType": "STRING"},
+    {"name": "type", "dataType": "STRING"},
+    {"name": "effective_domain", "dataType": "STRING"},
+    {"name": "src", "dataType": "STRING"}
+  ],
+  "metricFieldSpecs": [
+    {"name": "range_km", "dataType": "BIG_DECIMAL"},
+    {"name": "hit_probability", "dataType": "BIG_DECIMAL"},
+    {"name": "speed_kmh", "dataType": "BIG_DECIMAL"}
+  ],
+  "dateTimeFieldSpecs": [
+    {
+      "name": "ingest_timestamp_millis",
+      "dataType": "TIMESTAMP",
+      "format": "TIMESTAMP",
+      "granularity": "1:MILLISECONDS"
+    }
+  ]
+}

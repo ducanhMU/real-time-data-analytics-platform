@@ -1,0 +1,27 @@
+{
+  "schemaName": "cyber_ew_events_cdc",
+  "dimensionFieldSpecs": [
+    {"name": "id", "dataType": "STRING"},
+    {"name": "source_id", "dataType": "STRING"},
+    {"name": "target_sensor_id", "dataType": "STRING"},
+    {"name": "effect", "dataType": "STRING"},
+    {"name": "impact_domain", "dataType": "STRING"},
+    {"name": "level", "dataType": "STRING"},
+    {"name": "src", "dataType": "STRING"}
+  ],
+  "metricFieldSpecs": [],
+  "dateTimeFieldSpecs": [
+    {
+      "name": "event_time_millis",
+      "dataType": "TIMESTAMP",
+      "format": "TIMESTAMP",
+      "granularity": "1:MILLISECONDS"
+    },
+    {
+      "name": "ingest_timestamp_millis",
+     "dataType": "TIMESTAMP",
+      "format": "TIMESTAMP",
+      "granularity": "1:MILLISECONDS"
+    }
+  ]
+}

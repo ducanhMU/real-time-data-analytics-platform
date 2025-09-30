@@ -1,0 +1,24 @@
+{
+  "schemaName": "regions_cdc",
+  "dimensionFieldSpecs": [
+    {"name": "id", "dataType": "STRING"},
+    {"name": "region_name", "dataType": "STRING"},
+    {"name": "terrain_type", "dataType": "STRING"},
+    {"name": "classification", "dataType": "STRING"},
+    {"name": "src", "dataType": "STRING"}
+  ],
+  "metricFieldSpecs": [
+    {"name": "infrastructure_level", "dataType": "BIG_DECIMAL"},
+    {"name": "area_sqkm", "dataType": "BIG_DECIMAL"},
+    {"name": "lat_center", "dataType": "BIG_DECIMAL"},
+    {"name": "lon_center", "dataType": "BIG_DECIMAL"}
+  ],
+  "dateTimeFieldSpecs": [
+    {
+      "name": "ingest_timestamp_millis",
+     "dataType": "TIMESTAMP",
+      "format": "TIMESTAMP",
+      "granularity": "1:MILLISECONDS"
+    }
+  ]
+}
