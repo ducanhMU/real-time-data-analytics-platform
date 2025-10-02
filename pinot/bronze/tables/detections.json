@@ -2,7 +2,7 @@
   "tableName": "detections_cdc",
   "tableType": "REALTIME",
   "segmentsConfig": {
-    "timeColumnName": "event_time_millis",
+    "timeColumnName": "event_time",
     "timeType": "MILLISECONDS",
     "schemaName": "detections_cdc",
     "retentionTimeUnit": "DAYS",
@@ -22,7 +22,7 @@
     "streamIngestionConfig": {
       "streamConfigMaps": [{  
         "streamType": "kafka",  
-        "stream.kafka.topic.name": "jadc2_unwrap.raw.detections",  
+        "stream.kafka.topic.name": "jadc2.raw.detections",  
         "stream.kafka.broker.list": "kafka:9092",  
         "stream.kafka.consumer.factory.class.name": "org.apache.pinot.plugin.stream.kafka20.KafkaConsumerFactory",  
         "stream.kafka.consumer.prop.auto.offset.reset": "smallest",  
@@ -35,12 +35,69 @@
     },
     "transformConfigs": [
       {
-        "columnName": "event_time_millis",
-        "transformFunction": "DATETIMECONVERT(event_time, '1:MILLISECONDS:SIMPLE_DATE_FORMAT:yyyy-MM-dd''T''HH:mm:ss.SSSSSS''Z''', '1:MILLISECONDS:EPOCH', '1:MILLISECONDS')"
+        "columnName": "id",
+        "transformFunction": "JSONPATHSTRING(after, '$.id')"
       },
       {
-        "columnName": "ingest_timestamp_millis",
-        "transformFunction": "DATETIMECONVERT(ingest_timestamp, '1:MILLISECONDS:SIMPLE_DATE_FORMAT:yyyy-MM-dd''T''HH:mm:ss.SSSSSS''Z''', '1:MILLISECONDS:EPOCH', '1:MILLISECONDS')"
+        "columnName": "sensor_id",
+        "transformFunction": "JSONPATHSTRING(after, '$.sensor_id')"
+      },
+      {
+        "columnName": "target_id",
+        "transformFunction": "JSONPATHSTRING(after, '$.target_id')"
+      },
+      {
+        "columnName": "target_domain",
+        "transformFunction": "JSONPATHSTRING(after, '$.target_domain')"
+      },
+      {
+        "columnName": "region_id",
+        "transformFunction": "JSONPATHSTRING(after, '$.region_id')"
+      },
+      {
+        "columnName": "iff_status",
+        "transformFunction": "JSONPATHSTRING(after, '$.iff_status')"
+      },
+      {
+        "columnName": "threat_level",
+        "transformFunction": "JSONPATHSTRING(after, '$.threat_level')"
+      },
+      {
+        "columnName": "src",
+        "transformFunction": "JSONPATHSTRING(after, '$.src')"
+      },
+      {
+        "columnName": "lat",
+        "transformFunction": "JSONPATHSTRING(after, '$.lat')"
+      },
+      {
+        "columnName": "lon",
+        "transformFunction": "JSONPATHSTRING(after, '$.lon')"
+      },
+      {
+        "columnName": "altitude_depth",
+        "transformFunction": "JSONPATHSTRING(after, '$.altitude_depth')"
+      },
+      {
+        "columnName": "speed_kmh",
+        "transformFunction": "JSONPATHSTRING(after, '$.speed_kmh')"
+      },
+      {
+        "columnName": "heading_deg",
+        "transformFunction": "JSONPATHSTRING(after, '$.heading_deg')"
+      },
+      {
+        "columnName": "confidence",
+        "transformFunction": "JSONPATHSTRING(after, '$.confidence')"
+      },
+    
+      {
+        "columnName": "event_time",
+        "transformFunction": "DATETIMECONVERT(JSONPATHSTRING(after, '$.event_time'), '1:MILLISECONDS:SIMPLE_DATE_FORMAT:yyyy-MM-dd''T''HH:mm:ss.SSSSSS''Z''', '1:MILLISECONDS:EPOCH', '1:MILLISECONDS')"
+      },
+      {
+        "columnName": "ingest_timestamp",
+        "transformFunction": "DATETIMECONVERT(JSONPATHSTRING(after, '$.ingest_timestamp'), '1:MILLISECONDS:SIMPLE_DATE_FORMAT:yyyy-MM-dd''T''HH:mm:ss.SSSSSS''Z''', '1:MILLISECONDS:EPOCH', '1:MILLISECONDS')"
       }
     ]
   },

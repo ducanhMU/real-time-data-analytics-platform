@@ -1,6 +1,7 @@
 {
   "schemaName": "unit_status_updates_cdc",
   "dimensionFieldSpecs": [
+   
     {"name": "id", "dataType": "STRING"},
     {"name": "unit_id", "dataType": "STRING"},
     {"name": "region_id", "dataType": "STRING"},
@@ -15,13 +16,13 @@
   ],
   "dateTimeFieldSpecs": [
     {
-      "name": "event_time_millis",
+      "name": "event_time",
       "dataType": "TIMESTAMP",
       "format": "TIMESTAMP",
       "granularity": "1:MILLISECONDS"
     },
     {
-      "name": "ingest_timestamp_millis",
+      "name": "ingest_timestamp",
       "dataType": "TIMESTAMP",
       "format": "TIMESTAMP",
       "granularity": "1:MILLISECONDS"

@@ -1,6 +1,7 @@
 {
   "schemaName": "weapons_cdc",
   "dimensionFieldSpecs": [
+   
     {"name": "id", "dataType": "STRING"},
     {"name": "unit_id", "dataType": "STRING"},
     {"name": "name", "dataType": "STRING"},
@@ -15,7 +16,7 @@
   ],
   "dateTimeFieldSpecs": [
     {
-      "name": "ingest_timestamp_millis",
+      "name": "ingest_timestamp",
       "dataType": "TIMESTAMP",
       "format": "TIMESTAMP",
       "granularity": "1:MILLISECONDS"

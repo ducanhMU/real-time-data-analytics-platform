@@ -117,7 +117,7 @@ services:
       # logging
       CONNECT_LOG4J_ROOT_LOGLEVEL: INFO
     volumes:
-      - ./debezium/unwrap.json:/kafka/config/unwrap.json:ro
+      - ./debezium/register-postgres.json:/kafka/config/register-postgres.json:ro
     command: >
       bash -c '
         echo "Waiting for Kafka..."
@@ -132,7 +132,7 @@ services:
         done
 
         echo "Registering connector..."
-        curl -i -X POST -H "Accept:application/json" -H "Content-Type:application/json" http://localhost:8083/connectors/ -d @/kafka/config/unwrap.json || true
+        curl -i -X POST -H "Accept:application/json" -H "Content-Type:application/json" http://localhost:8083/connectors/ -d @/kafka/config/register-postgres.json || true
 
         wait
       '
@@ -229,14 +229,13 @@ services:
     entrypoint: >
       /bin/bash -c "
       echo 'Waiting for JobManager RPC...'; while ! nc -z jobmanager 6123; do sleep 1; done;
-      echo 'Waiting for Hive Metastore...'; while ! nc -z hms 9083; do sleep 1; done;
-      echo 'Waiting for MinIO...'; while ! nc -z minio 9000; do sleep 1; done;
       echo 'All services ready. Launching SQL Client...';
-      /opt/flink/bin/sql-client.sh -Dexecution.target=remote -Djobmanager.rpc.address=jobmanager -Djobmanager.rpc.port=6123 -f /opt/flink/kafka_to_iceberg.sql
+      /opt/flink/bin/sql-client.sh -Dexecution.target=remote -Djobmanager.rpc.address=jobmanager -Djobmanager.rpc.port=6123 -f /opt/flink/kafka_to_kafka.sql
       "
     volumes:
       - ./flink/conf/hive-site.xml:/opt/flink/conf/hive-site.xml:ro
       - ./flink/kafka_to_iceberg.sql:/opt/flink/kafka_to_iceberg.sql:ro
+      - ./flink/kafka_to_kafka.sql:/opt/flink/kafka_to_kafka.sql:ro
     networks:
       - jadc2
 
@@ -367,6 +366,13 @@ services:
       - "9002:9000" # avoid conflict with minio web ui
     volumes:
       - ./pinot:/opt/pinot/configs
+    environment:  
+      # Enable Basic Authentication for Controller  
+      - controller.admin.access.control.factory.class=org.apache.pinot.controller.api.access.BasicAuthAccessControlFactory
+      - controller.admin.access.control.principals=admin,superset
+      - controller.admin.access.control.principals.admin.password=password
+      - controller.admin.access.control.principals.superset.password=password
+      - controller.admin.access.control.principals.superset.permissions=read
     healthcheck:
       test: ["CMD-SHELL", "curl -f http://localhost:9000/health || exit 1"]
       interval: 10s
@@ -385,6 +391,13 @@ services:
         condition: service_healthy
     ports:
       - "8099:8099"
+    environment:  
+      # Enable Basic Authentication for Broker  
+      - pinot.broker.access.control.class=org.apache.pinot.broker.broker.BasicAuthAccessControlFactory
+      - pinot.broker.access.control.principals=admin,superset
+      - pinot.broker.access.control.principals.admin.password=password
+      - pinot.broker.access.control.principals.superset.password=password
+      - pinot.broker.access.control.principals.superset.permissions=read
     healthcheck:
       test: ["CMD-SHELL", "curl -f http://localhost:8099/health || exit 1"]
       interval: 10s
@@ -437,6 +450,32 @@ services:
       timeout: 10s
       retries: 5
       start_period: 10s
+    networks:
+      - jadc2
+  superset:
+    image: apachepinot/pinot-superset:latest
+    container_name: jadc2-superset
+    depends_on:
+      - pinot-broker
+    ports:
+      - "8088:8088"
+    environment:
+      SUPERSET_SECRET_KEY: ${SUPERSET_SECRET_KEY:-g0/z2KTBZBygSjh/D5t527EbGu6q1Sl7mC0IKXcZD8oo5uKLo3RqmWbR}
+      
+    volumes:
+      - superset_home:/app/superset_home
+    command: >
+      bash -c "
+      superset db upgrade &&
+      superset fab create-admin --username admin --firstname Superset --lastname Admin --email admin@example.com --password admin || true &&
+      superset init &&
+      superset run -h 0.0.0.0 -p 8088 --with-threads --reload
+      "
+    healthcheck:
+      test: ["CMD-SHELL", "curl -f http://localhost:8088 || exit 1"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
     networks:
       - jadc2
 
@@ -604,38 +643,7 @@ services:
   #   networks:
   #     - jadc2_network
 
-  # superset:
-  #   build:
-  #     context: ./superset
-  #     dockerfile: Dockerfile
-  #   container_name: jadc2-superset
-  #   depends_on:
-  #     clickhouse:
-  #       condition: service_healthy
-  #   ports:
-  #     - "8088:8088"
-  #   environment:
-  #     SUPERSET_SECRET_KEY: ${SUPERSET_SECRET_KEY:-effe3072881e1b3893084ab69f4905d4e567e50aee19abc4f699d44acf18805c}
-  #     CLICKHOUSE_HOST: jadc2-clickhouse
-  #     CLICKHOUSE_USER: ${CLICKHOUSE_USER:-admin}
-  #     CLICKHOUSE_PASSWORD: ${CLICKHOUSE_PASSWORD:-password}
-  #     CLICKHOUSE_PORT: 8123
-  #   volumes:
-  #     - superset_home:/app/superset_home
-  #   command: >
-  #     bash -c "
-  #     superset db upgrade &&
-  #     superset fab create-admin --username admin --firstname Superset --lastname Admin --email admin@example.com --password admin || true &&
-  #     superset init &&
-  #     superset run -h 0.0.0.0 -p 8088 --with-threads --reload
-  #     "
-  #   healthcheck:
-  #     test: ["CMD-SHELL", "curl -f http://localhost:8088 || exit 1"]
-  #     interval: 10s
-  #     timeout: 5s
-  #     retries: 5
-  #   networks:
-  #     - jadc2_network
+  
 
   # chatbot-pinot:
   #   build: ./chatbot_pinot
@@ -665,7 +673,7 @@ volumes:
   # dremio_conf:
   # airflow_postgres_data:
   # clickhouse_data:
-  # superset_home:
+  superset_home:
 
 networks:
   jadc2:

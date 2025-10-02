@@ -2,7 +2,7 @@
   "tableName": "units_cdc",
   "tableType": "REALTIME",
   "segmentsConfig": {
-    "timeColumnName": "ingest_timestamp_millis",
+    "timeColumnName": "ingest_timestamp",
     "timeType": "MILLISECONDS",
     "schemaName": "units_cdc",
     "retentionTimeUnit": "DAYS",
@@ -22,7 +22,7 @@
     "streamIngestionConfig": {
       "streamConfigMaps": [{  
         "streamType": "kafka",  
-        "stream.kafka.topic.name": "jadc2_unwrap.raw.units",  
+        "stream.kafka.topic.name": "jadc2.raw.units",  
         "stream.kafka.broker.list": "kafka:9092",  
         "stream.kafka.consumer.factory.class.name": "org.apache.pinot.plugin.stream.kafka20.KafkaConsumerFactory",  
         "stream.kafka.consumer.prop.auto.offset.reset": "smallest",  
@@ -34,10 +34,37 @@
       }]  
     },
     "transformConfigs": [
- 
       {
-        "columnName": "ingest_timestamp_millis",
-        "transformFunction": "DATETIMECONVERT(ingest_timestamp, '1:MILLISECONDS:SIMPLE_DATE_FORMAT:yyyy-MM-dd''T''HH:mm:ss.SSSSSS''Z''', '1:MILLISECONDS:EPOCH', '1:MILLISECONDS')"
+        "columnName": "id",
+        "transformFunction": "JSONPATHSTRING(after, '$.id')"
+      },
+      {
+        "columnName": "name",
+        "transformFunction": "JSONPATHSTRING(after, '$.name')"
+      },
+      {
+        "columnName": "domain",
+        "transformFunction": "JSONPATHSTRING(after, '$.domain')"
+      },
+      {
+        "columnName": "unit_type",
+        "transformFunction": "JSONPATHSTRING(after, '$.unit_type')"
+      },
+      {
+        "columnName": "status",
+        "transformFunction": "JSONPATHSTRING(after, '$.status')"
+      },
+      {
+        "columnName": "classification",
+        "transformFunction": "JSONPATHSTRING(after, '$.classification')"
+      },
+      {
+        "columnName": "src",
+        "transformFunction": "JSONPATHSTRING(after, '$.src')"
+      },
+      {
+        "columnName": "ingest_timestamp",
+        "transformFunction": "DATETIMECONVERT(JSONPATHSTRING(after, '$.ingest_timestamp'), '1:MILLISECONDS:SIMPLE_DATE_FORMAT:yyyy-MM-dd''T''HH:mm:ss.SSSSSS''Z''', '1:MILLISECONDS:EPOCH', '1:MILLISECONDS')"
       }
     ]
   },

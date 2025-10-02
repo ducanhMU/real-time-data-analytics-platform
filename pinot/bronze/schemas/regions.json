@@ -1,6 +1,7 @@
 {
   "schemaName": "regions_cdc",
   "dimensionFieldSpecs": [
+   
     {"name": "id", "dataType": "STRING"},
     {"name": "region_name", "dataType": "STRING"},
     {"name": "terrain_type", "dataType": "STRING"},
@@ -15,7 +16,7 @@
   ],
   "dateTimeFieldSpecs": [
     {
-      "name": "ingest_timestamp_millis",
+      "name": "ingest_timestamp",
      "dataType": "TIMESTAMP",
       "format": "TIMESTAMP",
       "granularity": "1:MILLISECONDS"

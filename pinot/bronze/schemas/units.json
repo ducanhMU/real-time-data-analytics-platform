@@ -1,6 +1,7 @@
 {
   "schemaName": "units_cdc",
   "dimensionFieldSpecs": [
+    
     {"name": "id", "dataType": "STRING"},
     {"name": "name", "dataType": "STRING"},
     {"name": "domain", "dataType": "STRING"},
@@ -12,7 +13,7 @@
   "metricFieldSpecs": [],
   "dateTimeFieldSpecs": [
     {
-      "name": "ingest_timestamp_millis",
+      "name": "ingest_timestamp",
       "dataType": "TIMESTAMP",
       "format": "TIMESTAMP",
       "granularity": "1:MILLISECONDS"

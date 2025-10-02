@@ -1,6 +1,7 @@
 {
   "schemaName": "sensors_cdc",
   "dimensionFieldSpecs": [
+   
     {"name": "id","dataType": "STRING"},
     {"name": "unit_id","dataType": "STRING"},
     {"name": "sensor_type","dataType": "STRING"},
@@ -11,7 +12,7 @@
     {"name": "range_km","dataType": "BIG_DECIMAL"}
   ],
   "dateTimeFieldSpecs": [
-    {"name": "ingest_timestamp_millis","dataType": "TIMESTAMP",
+    {"name": "ingest_timestamp","dataType": "TIMESTAMP",
       "format": "TIMESTAMP","granularity":"1:MILLISECONDS"}
   ]
 }

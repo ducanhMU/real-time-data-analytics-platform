@@ -20,7 +20,7 @@ RUN echo "-> Install JARs: Flink's Hive connector" && \
 
 RUN echo "-> Install JARs: Flink's Pinot connector" && \
     mkdir -p ./lib/pinot && \
-    curl https://repo1.maven.org/maven2/org/apache/pinot/pinot-flink-connector/1.1.0/pinot-flink-connector-1.1.0.jar -o ./lib/pinot/pinot-flink-connector-1.1.0.jar  
+    curl https://repo1.maven.org/maven2/org/apache/pinot/pinot-flink-connector/1.4.0/pinot-flink-connector-1.4.0.jar -o ./lib/pinot/pinot-flink-connector-1.4.0.jar  
 
 RUN echo "-> Install JARs: Dependencies for Iceberg" && \
     mkdir -p ./lib/iceberg && \

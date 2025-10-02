@@ -1,6 +1,6 @@
 kafka-console-consumer \
    --bootstrap-server localhost:9092 \
-   --topic jadc2_unwrap.raw.alerts \
+   --topic jadc2.raw.alerts \
    --from-beginning \
    --max-messages 10
 

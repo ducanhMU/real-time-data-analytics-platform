@@ -1,5 +1,5 @@
 FROM apache/superset:latest
 
 USER root
-RUN pip install clickhouse-connect
+RUN pip install pinotdb
 USER superset

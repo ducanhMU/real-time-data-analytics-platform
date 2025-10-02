@@ -4,21 +4,13 @@
     {"name": "alert_id", "dataType": "STRING"},
     {"name": "detection_id", "dataType": "STRING"},
     {"name": "region_id", "dataType": "STRING"},
+    {"name": "threat_level", "dataType": "STRING"},
     {"name": "command_id", "dataType": "STRING"},
+    {"name": "action", "dataType": "STRING"},
     {"name": "user_id", "dataType": "STRING"}
   ],
   "metricFieldSpecs": [],
-  "singleValueFieldSpecs": [
-    {"name": "threat_level", "dataType": "STRING"},
-    {"name": "action", "dataType": "STRING"}
-  ],
-  "timeFieldSpec": {
-    "name": "timestamp",
-    "dataType": "TIMESTAMP",
-    "incomingGranularitySpec": {
-      "dataType": "MILLISECONDS",
-      "timeFormat": "1:MILLISECONDS:EPOCH",
-      "timeUnit": "MILLISECONDS"
-    }
-  }
+  
+  "dateTimeFieldSpecs": [{"name": "event_timestamp","dataType": "TIMESTAMP",
+      "format": "TIMESTAMP","granularity":"1:MILLISECONDS"}]
 }

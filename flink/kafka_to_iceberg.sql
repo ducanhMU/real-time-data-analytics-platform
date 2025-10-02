@@ -35,7 +35,7 @@ CREATE TABLE IF NOT EXISTS default_catalog.default_database.regions_cdc (
     lon_center DECIMAL(19,8),
     classification STRING,
     ingest_timestamp TIMESTAMP_LTZ(6),
-    source STRING,
+    src STRING,
     PRIMARY KEY (id) NOT ENFORCED
 ) WITH (
     'connector' = 'kafka',
@@ -57,7 +57,7 @@ CREATE TABLE IF NOT EXISTS regions_iceberg (
     lon_center DECIMAL(19,8),
     classification STRING,
     ingest_timestamp TIMESTAMP_LTZ(6),
-    source STRING,
+    src STRING,
     PRIMARY KEY (id) NOT ENFORCED
 ) WITH (
     'write.target-file-size-bytes' = '16000000', -- avoid OOM error
@@ -80,7 +80,7 @@ CREATE TABLE IF NOT EXISTS default_catalog.default_database.targets_cdc (
     iff_status STRING,
     classification STRING,
     ingest_timestamp TIMESTAMP_LTZ(6),
-    source STRING,
+    src STRING,
     PRIMARY KEY (id) NOT ENFORCED
 ) WITH (
     'connector' = 'kafka',
@@ -102,7 +102,7 @@ CREATE TABLE IF NOT EXISTS targets_iceberg (
     iff_status STRING,
     classification STRING,
     ingest_timestamp TIMESTAMP_LTZ(6),
-    source STRING,
+    src STRING,
     PRIMARY KEY (id) NOT ENFORCED
 ) WITH (
     'write.target-file-size-bytes' = '16000000', -- avoid OOM error
@@ -121,7 +121,7 @@ CREATE TABLE IF NOT EXISTS default_catalog.default_database.users_cdc (
     `role` STRING,
     classification STRING,
     ingest_timestamp TIMESTAMP_LTZ(6),
-    source STRING,
+    src STRING,
     PRIMARY KEY (id) NOT ENFORCED
 ) WITH (
     'connector' = 'kafka',
@@ -139,7 +139,7 @@ CREATE TABLE IF NOT EXISTS users_iceberg (
     `role` STRING,
     classification STRING,
     ingest_timestamp TIMESTAMP_LTZ(6),
-    source STRING,
+    src STRING,
     PRIMARY KEY (id) NOT ENFORCED
 ) WITH (
     'write.target-file-size-bytes' = '16000000', -- avoid OOM error
@@ -160,7 +160,7 @@ CREATE TABLE IF NOT EXISTS default_catalog.default_database.units_cdc (
     `status` STRING,
     classification STRING,
     ingest_timestamp TIMESTAMP_LTZ(6),
-    source STRING,
+    src STRING,
     PRIMARY KEY (id) NOT ENFORCED
 ) WITH (
     'connector' = 'kafka',
@@ -180,7 +180,7 @@ CREATE TABLE IF NOT EXISTS units_iceberg (
     `status` STRING,
     classification STRING,
     ingest_timestamp TIMESTAMP_LTZ(6),
-    source STRING,
+    src STRING,
     PRIMARY KEY (id) NOT ENFORCED
 ) WITH (
     'write.target-file-size-bytes' = '16000000', -- avoid OOM error
@@ -203,7 +203,7 @@ CREATE TABLE IF NOT EXISTS default_catalog.default_database.weapons_cdc (
     hit_probability DECIMAL(19,4),
     speed_kmh DECIMAL(19,4),
     ingest_timestamp TIMESTAMP_LTZ(6),
-    source STRING,
+    src STRING,
     PRIMARY KEY (id) NOT ENFORCED
 ) WITH (
     'connector' = 'kafka',
@@ -225,7 +225,7 @@ CREATE TABLE IF NOT EXISTS weapons_iceberg (
     hit_probability DECIMAL(19,4),
     speed_kmh DECIMAL(19,4),
     ingest_timestamp TIMESTAMP_LTZ(6),
-    source STRING,
+    src STRING,
     PRIMARY KEY (id) NOT ENFORCED
 ) WITH (
     'write.target-file-size-bytes' = '16000000', -- avoid OOM error
@@ -245,7 +245,7 @@ CREATE TABLE IF NOT EXISTS default_catalog.default_database.sensors_cdc (
     range_km DECIMAL(19,4),
     `status` STRING,
     ingest_timestamp TIMESTAMP_LTZ(6),
-    source STRING,
+    src STRING,
     PRIMARY KEY (id) NOT ENFORCED
 ) WITH (
     'connector' = 'kafka',
@@ -264,7 +264,7 @@ CREATE TABLE IF NOT EXISTS sensors_iceberg (
     range_km DECIMAL(19,4),
     `status` STRING,
     ingest_timestamp TIMESTAMP_LTZ(6),
-    source STRING,
+    src STRING,
     PRIMARY KEY (id) NOT ENFORCED
 ) WITH (
     'write.target-file-size-bytes' = '16000000', -- avoid OOM error
@@ -291,9 +291,9 @@ CREATE TABLE IF NOT EXISTS default_catalog.default_database.detections_cdc (
     confidence DECIMAL(19,4),
     iff_status STRING,
     threat_level STRING,
-    `timestamp` TIMESTAMP_LTZ(6),
+    event_time TIMESTAMP_LTZ(6),
     ingest_timestamp TIMESTAMP_LTZ(6),
-    source STRING,
+    src STRING,
     PRIMARY KEY (id) NOT ENFORCED
 ) WITH (
     'connector' = 'kafka',
@@ -319,9 +319,9 @@ CREATE TABLE IF NOT EXISTS detections_iceberg (
     confidence DECIMAL(19,4),
     iff_status STRING,
     threat_level STRING,
-    `timestamp` TIMESTAMP_LTZ(6),
+    event_time TIMESTAMP_LTZ(6),
     ingest_timestamp TIMESTAMP_LTZ(6),
-    source STRING,
+    src STRING,
     PRIMARY KEY (id) NOT ENFORCED
 ) WITH (
     'write.target-file-size-bytes' = '16000000', -- avoid OOM error
@@ -341,9 +341,9 @@ CREATE TABLE IF NOT EXISTS default_catalog.default_database.weather_events_cdc (
     intensity DECIMAL(19,4),
     wind_speed_kmh DECIMAL(19,4),
     precipitation_mm DECIMAL(19,4),
-    `timestamp` TIMESTAMP_LTZ(6),
+    event_time TIMESTAMP_LTZ(6),
     ingest_timestamp TIMESTAMP_LTZ(6),
-    source STRING,
+    src STRING,
     PRIMARY KEY (id) NOT ENFORCED
 ) WITH (
     'connector' = 'kafka',
@@ -362,9 +362,9 @@ CREATE TABLE IF NOT EXISTS weather_events_iceberg (
     intensity DECIMAL(19,4),
     wind_speed_kmh DECIMAL(19,4),
     precipitation_mm DECIMAL(19,4),
-    `timestamp` TIMESTAMP_LTZ(6),
+    event_time TIMESTAMP_LTZ(6),
     ingest_timestamp TIMESTAMP_LTZ(6),
-    source STRING,
+    src STRING,
     PRIMARY KEY (id) NOT ENFORCED
 ) WITH (
     'write.target-file-size-bytes' = '16000000', -- avoid OOM error
@@ -386,9 +386,9 @@ CREATE TABLE IF NOT EXISTS default_catalog.default_database.unit_status_updates_
     health_percent DECIMAL(19,4),
     max_range_km DECIMAL(19,4),
     `status` STRING,
-    `timestamp` TIMESTAMP_LTZ(6),
+    event_time TIMESTAMP_LTZ(6),
     ingest_timestamp TIMESTAMP_LTZ(6),
-    source STRING,
+    src STRING,
     PRIMARY KEY (id) NOT ENFORCED
 ) WITH (
     'connector' = 'kafka',
@@ -409,9 +409,9 @@ CREATE TABLE IF NOT EXISTS unit_status_updates_iceberg (
     health_percent DECIMAL(19,4),
     max_range_km DECIMAL(19,4),
     `status` STRING,
-    `timestamp` TIMESTAMP_LTZ(6),
+    event_time TIMESTAMP_LTZ(6),
     ingest_timestamp TIMESTAMP_LTZ(6),
-    source STRING,
+    src STRING,
     PRIMARY KEY (id) NOT ENFORCED
 ) WITH (
     'write.target-file-size-bytes' = '16000000', -- avoid OOM error
@@ -429,9 +429,9 @@ CREATE TABLE IF NOT EXISTS default_catalog.default_database.supply_status_cdc (
     unit_id STRING,
     region_id STRING,
     supply_level DECIMAL(19,4),
-    `timestamp` TIMESTAMP_LTZ(6),
+    event_time TIMESTAMP_LTZ(6),
     ingest_timestamp TIMESTAMP_LTZ(6),
-    source STRING,
+    src STRING,
     PRIMARY KEY (id) NOT ENFORCED
 ) WITH (
     'connector' = 'kafka',
@@ -448,9 +448,9 @@ CREATE TABLE IF NOT EXISTS supply_status_iceberg (
     unit_id STRING,
     region_id STRING,
     supply_level DECIMAL(19,4),
-    `timestamp` TIMESTAMP_LTZ(6),
+    event_time TIMESTAMP_LTZ(6),
     ingest_timestamp TIMESTAMP_LTZ(6),
-    source STRING,
+    src STRING,
     PRIMARY KEY (id) NOT ENFORCED
 ) WITH (
     'write.target-file-size-bytes' = '16000000', -- avoid OOM error
@@ -470,9 +470,9 @@ CREATE TABLE IF NOT EXISTS default_catalog.default_database.cyber_ew_events_cdc 
     effect STRING,
     impact_domain STRING,
     `level` STRING,
-    `timestamp` TIMESTAMP_LTZ(6),
+    event_time TIMESTAMP_LTZ(6),
     ingest_timestamp TIMESTAMP_LTZ(6),
-    source STRING,
+    src STRING,
     PRIMARY KEY (id) NOT ENFORCED
 ) WITH (
     'connector' = 'kafka',
@@ -491,9 +491,9 @@ CREATE TABLE IF NOT EXISTS cyber_ew_events_iceberg (
     effect STRING,
     impact_domain STRING,
     `level` STRING,
-    `timestamp` TIMESTAMP_LTZ(6),
+    event_time TIMESTAMP_LTZ(6),
     ingest_timestamp TIMESTAMP_LTZ(6),
-    source STRING,
+    src STRING,
     PRIMARY KEY (id) NOT ENFORCED
 ) WITH (
     'write.target-file-size-bytes' = '16000000', -- avoid OOM error
@@ -514,9 +514,9 @@ CREATE TABLE IF NOT EXISTS default_catalog.default_database.engagement_events_cd
     hit BOOLEAN,
     `result` STRING,
     roe_compliant BOOLEAN,
-    `timestamp` TIMESTAMP_LTZ(6),
+    event_time TIMESTAMP_LTZ(6),
     ingest_timestamp TIMESTAMP_LTZ(6),
-    source STRING,
+    src STRING,
     PRIMARY KEY (id) NOT ENFORCED
 ) WITH (
     'connector' = 'kafka',
@@ -536,9 +536,9 @@ CREATE TABLE IF NOT EXISTS engagement_events_iceberg (
     hit BOOLEAN,
     `result` STRING,
     roe_compliant BOOLEAN,
-    `timestamp` TIMESTAMP_LTZ(6),
+    event_time TIMESTAMP_LTZ(6),
     ingest_timestamp TIMESTAMP_LTZ(6),
-    source STRING,
+    src STRING,
     PRIMARY KEY (id) NOT ENFORCED
 ) WITH (
     'write.target-file-size-bytes' = '16000000', -- avoid OOM error
@@ -554,9 +554,9 @@ SELECT * FROM default_catalog.default_database.engagement_events_cdc;
 CREATE TABLE IF NOT EXISTS default_catalog.default_database.roe_updates_cdc (
     id STRING,
     rules STRING,
-    `timestamp` TIMESTAMP_LTZ(6),
+    event_time TIMESTAMP_LTZ(6),
     ingest_timestamp TIMESTAMP_LTZ(6),
-    source STRING,
+    src STRING,
     PRIMARY KEY (id) NOT ENFORCED
 ) WITH (
     'connector' = 'kafka',
@@ -571,9 +571,9 @@ CREATE TABLE IF NOT EXISTS default_catalog.default_database.roe_updates_cdc (
 CREATE TABLE IF NOT EXISTS roe_updates_iceberg (
     id STRING,
     rules STRING,
-    `timestamp` TIMESTAMP_LTZ(6),
+    event_time TIMESTAMP_LTZ(6),
     ingest_timestamp TIMESTAMP_LTZ(6),
-    source STRING,
+    src STRING,
     PRIMARY KEY (id) NOT ENFORCED
 ) WITH (
     'write.target-file-size-bytes' = '16000000', -- avoid OOM error
@@ -590,11 +590,11 @@ CREATE TABLE IF NOT EXISTS default_catalog.default_database.alerts_cdc (
     id STRING,
     detection_id STRING,
     `status` STRING,
-    `message` STRING,
+    msg STRING,
     threat_level STRING,
     created_at TIMESTAMP_LTZ(6),
     ingest_timestamp TIMESTAMP_LTZ(6),
-    source STRING,
+    src STRING,
     PRIMARY KEY (id) NOT ENFORCED
 ) WITH (
     'connector' = 'kafka',
@@ -610,11 +610,11 @@ CREATE TABLE IF NOT EXISTS alerts_iceberg (
     id STRING,
     detection_id STRING,
     `status` STRING,
-    `message` STRING,
+    msg STRING,
     threat_level STRING,
     created_at TIMESTAMP_LTZ(6),
     ingest_timestamp TIMESTAMP_LTZ(6),
-    source STRING,
+    src STRING,
     PRIMARY KEY (id) NOT ENFORCED
 ) WITH (
     'write.target-file-size-bytes' = '16000000', -- avoid OOM error
@@ -633,9 +633,9 @@ CREATE TABLE IF NOT EXISTS default_catalog.default_database.commands_cdc (
     unit_id STRING,
     `user_id` STRING,
     `action` STRING,
-    `timestamp` TIMESTAMP_LTZ(6),
+    event_time TIMESTAMP_LTZ(6),
     ingest_timestamp TIMESTAMP_LTZ(6),
-    source STRING,
+    src STRING,
     PRIMARY KEY (id) NOT ENFORCED
 ) WITH (
     'connector' = 'kafka',
@@ -653,9 +653,9 @@ CREATE TABLE IF NOT EXISTS commands_iceberg (
     unit_id STRING,
     `user_id` STRING,
     `action` STRING,
-    `timestamp` TIMESTAMP_LTZ(6),
+    event_time TIMESTAMP_LTZ(6),
     ingest_timestamp TIMESTAMP_LTZ(6),
-    source STRING,
+    src STRING,
     PRIMARY KEY (id) NOT ENFORCED
 ) WITH (
     'write.target-file-size-bytes' = '16000000', -- avoid OOM error

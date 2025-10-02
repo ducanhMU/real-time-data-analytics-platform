@@ -556,32 +556,43 @@ Threat prioritization with weather and EW adjustments.
 
 ---
 
-#### gold.engagement\_analysis
+#### gold.engagement_analysis
 
-**Purpose**: After-action review of engagements with terrain/weather/EW effects.
+**Purpose**: After-action review of engagements, enriched with attacker's current region, terrain/weather context, and cyber-EW impacts.
 
 **Source Silver Tables**:
 
-* `silver.engagement_events` (engagement\_id, attacker\_id, target\_id, weapon\_id, region\_id, result, hit\_probability, timestamp)
-* `silver.regions` (region\_id, terrain\_type)
-* `silver.weather_events` (region\_id, intensity, type, timestamp)
-* `silver.cyber_ew_events` (target\_sensor\_id, effect, timestamp)
-* `silver.weapons` (hit_probability)
+-   `silver.engagement_events`\
+    (`id`, `attacker_id`, `target_id`, `weapon_id`, `result`, `event_time`)
+
+-   `silver.unit_status_updates`\
+    (`unit_id`, `region_id`, `event_time`) → used to resolve **attacker's region** at time of engagement
+
+-   `silver.regions`\
+    (`id`, `terrain_type`)
+
+-   `silver.weather_events`\
+    (`region_id`, `type`, `intensity`, `event_time`)
+
+-   `silver.cyber_ew_events`\
+    (`target_sensor_id`, `effect`, `event_time`)
+
+-   `silver.weapons`\
+    (`id`, `hit_probability`)
 
 **Columns**:
 
-| Column                     | Formula / Source                                                                                               |
-| -------------------------- | -------------------------------------------------------------------------------------------------------------- |
-| engagement\_id             | silver.engagement\_events.id                                                                       |
-| attacker\_id               | silver.engagement\_events.attacker\_id                                                                         |
-| target\_id                 | silver.engagement\_events.target\_id                                                                           |
-| weapon\_id                 | silver.engagement\_events.weapon\_id                                                                           |
-| region\_id                 | silver.engagement\_events.region\_id                                                                           |
-| result                     | silver.engagement\_events.result                                                                               |
-| adjusted\_hit\_probability | `hit_probability * (1 - 0.2 * intensity * (type = 'fog') - 0.3 * (effect = 'jammed'))`                         |
-| impact\_factor             | `(1 - 0.2 * (type='fog') - 0.3 * (effect='jammed')) * CASE terrain_type WHEN 'mountain' THEN 0.8 ELSE 1.0 END` |
-| event_time                  | silver.engagement\_events.event_time                                                                            |
-              
+| Column | Formula / Source |
+| --- | --- |
+| engagement_id | `engagement_events.id` |
+| attacker_id | `engagement_events.attacker_id` |
+| target_id | `engagement_events.target_id` |
+| weapon_id | `engagement_events.weapon_id` |
+| region_id | From `unit_status_updates.region_id` where `unit_status_updates.unit_id = engagement_events.attacker_id` (closest by `event_time`). |
+| result | `engagement_events.result` |
+| adjusted_hit_probability | `weapons.hit_probability * (1 - 0.2 * weather_events.intensity * (weather_events.type='fog') - 0.3 * (cyber_ew_events.effect='jammed'))` |
+| impact_factor | `(1 - 0.2 * (weather_events.type='fog') - 0.3 * (cyber_ew_events.effect='jammed')) * (CASE regions.terrain_type WHEN 'mountain' THEN 0.8 ELSE 1.0 END)` |
+| event_time | `engagement_events.event_time` |
 
 ## Indexes
 Optimized for PostgreSQL, supporting real-time C2 queries for the MCP chatbot, handling 1M+ events daily with `classification` for security.

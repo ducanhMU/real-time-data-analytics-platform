@@ -3,8 +3,8 @@ set -e
 
 PINOT_CONTROLLER="pinot-controller"
 PINOT_PORT=9000
-SCHEMA_DIR="/opt/pinot/configs/bronze/schemas"
-TABLE_DIR="/opt/pinot/configs/bronze/tables"
+SCHEMA_DIR="/opt/pinot/configs/gold/schemas"
+TABLE_DIR="/opt/pinot/configs/gold/tables"
 
 echo "Waiting for Pinot Controller..."
 until curl -s "http://$PINOT_CONTROLLER:$PINOT_PORT/health" > /dev/null; do

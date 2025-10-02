@@ -2,37 +2,45 @@
   "tableName": "gold_engagement_analysis",
   "tableType": "REALTIME",
   "segmentsConfig": {
-    "timeColumnName": "timestamp",
+    "timeColumnName": "event_timestamp",
     "timeType": "MILLISECONDS",
+    "schemaName": "gold_engagement_analysis",
+    "retentionTimeUnit": "DAYS",
+    "retentionTimeValue": "30",
+    "segmentPushType": "APPEND",
+    "segmentAssignmentStrategy": "BalanceNumSegmentAssignmentStrategy",
     "replicasPerPartition": "1"
   },
+  "tenants": {
+    "broker": "DefaultTenant",
+    "server": "DefaultTenant"
+  },
   "tableIndexConfig": {
-    "loadMode": "MMAP",
-    "realtime.segment.flush.threshold.rows": "50000",
-    "streamConfigs": {
-      "streamType": "kafka",
-      "stream.kafka.topic.name": "gold.engagement_analysis",
-      "stream.kafka.bootstrap.servers": "kafka:9092",
-      "stream.kafka.consumer.prop.auto.offset.reset": "smallest",
-      "stream.kafka.decoder.class.name": "org.apache.pinot.plugin.stream.kafka20.KafkaJSONMessageDecoder"
-    },
-
-    "invertedIndexColumns": ["engagement_id", "attacker_id", "target_id", "weapon_id", "region_id"],
-    "sortedColumn": "timestamp",
-    "rangeIndexColumns": ["adjusted_hit_probability", "impact_factor"],
-    "textIndexColumns": ["result"]
+    "loadMode": "MMAP"
   },
     "ingestionConfig": {
+      "streamIngestionConfig": {
+      "streamConfigMaps": [{  
+        "streamType": "kafka",  
+        "stream.kafka.topic.name": "jadc2.gold.engagement_analysis",  
+        "stream.kafka.broker.list": "kafka:9092",  
+        "stream.kafka.consumer.factory.class.name": "org.apache.pinot.plugin.stream.kafka20.KafkaConsumerFactory",  
+        "stream.kafka.consumer.prop.auto.offset.reset": "smallest",  
+        "stream.kafka.consumer.type": "lowLevel",  
+        "stream.kafka.consumer.group.id": "pinot",  
+        "stream.kafka.decoder.class.name": "org.apache.pinot.plugin.inputformat.json.JSONMessageDecoder",  
+        "realtime.segment.flush.threshold.segment.rows": "500000",  
+        "realtime.segment.flush.threshold.time": "3600000"  
+      }]  
+    },
         "transformConfigs": [
-            {"columnName": "engagement_id", "transformFunction": "jsonPathString(message, '$.engagement_id')"},
-            {"columnName": "attacker_id", "transformFunction": "jsonPathString(message, '$.attacker_id')"},
-            {"columnName": "target_id", "transformFunction": "jsonPathString(message, '$.target_id')"},
-            {"columnName": "weapon_id", "transformFunction": "jsonPathString(message, '$.weapon_id')"},  
-            {"columnName": "region_id", "transformFunction": "jsonPathString(message, '$.region_id')"},
-            {"columnName": "result", "transformFunction": "jsonPathLong(message, '$.result')"},
-            {"columnName": "adjusted_hit_probabilities", "transformFunction": "jsonPathLong(message, '$.adjusted_hit_probabilities')"},
-            {"columnName": "impact_factor", "transformFunction": "jsonPathLong(message, '$.impact_factor')"},
-            {"columnName": "timestamp", "transformFunction": "jsonPathLong(message, '$.timestamp')"}
+            {
+              "columnName": "event_timestamp",
+              "transformFunction": "DATETIMECONVERT(event_time, '1:MILLISECONDS:SIMPLE_DATE_FORMAT:yyyy-MM-dd HH:mm:ss.SSS''Z''', '1:MILLISECONDS:EPOCH', '1:MILLISECONDS')"
+            }
         ]
-    }
+    },
+  "metadata": {
+    "customConfigs": {}
+  }
 }

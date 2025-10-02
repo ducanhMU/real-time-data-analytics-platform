@@ -2,34 +2,46 @@
   "tableName": "gold_logistics_readiness",
   "tableType": "REALTIME",
   "segmentsConfig": {
-    "timeColumnName": "timestamp",
+    "timeColumnName": "event_timestamp",
     "timeType": "MILLISECONDS",
+    "schemaName": "gold_logistics_readiness",
+    "retentionTimeUnit": "DAYS",
+    "retentionTimeValue": "30",
+    "segmentPushType": "APPEND",
+    "segmentAssignmentStrategy": "BalanceNumSegmentAssignmentStrategy",
     "replicasPerPartition": "1"
   },
+  "tenants": {
+    "broker": "DefaultTenant",
+    "server": "DefaultTenant"
+  },
   "tableIndexConfig": {
-    "loadMode": "MMAP",
-    "realtime.segment.flush.threshold.rows": "50000",
-    "streamConfigs": {
-      "streamType": "kafka",
-      "stream.kafka.topic.name": "gold.logistics_readiness",
-      "stream.kafka.bootstrap.servers": "kafka:9092",
-      "stream.kafka.consumer.prop.auto.offset.reset": "smallest",
-      "stream.kafka.decoder.class.name": "org.apache.pinot.plugin.stream.kafka20.KafkaJSONMessageDecoder"
-    },
-
-    "invertedIndexColumns": ["unit_id", "region_id", "resupply_feasibility"],
-    "sortedColumn": "timestamp",
-    "rangeIndexColumns": ["supply_level", "projected_supply"],
-    "textIndexColumns": []
+    "loadMode": "MMAP"
   },
     "ingestionConfig": {
+        "streamIngestionConfig": {
+      "streamConfigMaps": [{  
+        "streamType": "kafka",  
+        "stream.kafka.topic.name": "jadc2.gold.logistics_readiness",  
+        "stream.kafka.broker.list": "kafka:9092",  
+        "stream.kafka.consumer.factory.class.name": "org.apache.pinot.plugin.stream.kafka20.KafkaConsumerFactory",  
+        "stream.kafka.consumer.prop.auto.offset.reset": "smallest",  
+        "stream.kafka.consumer.type": "lowLevel",  
+        "stream.kafka.consumer.group.id": "pinot",  
+        "stream.kafka.decoder.class.name": "org.apache.pinot.plugin.inputformat.json.JSONMessageDecoder",  
+        "realtime.segment.flush.threshold.segment.rows": "500000",  
+        "realtime.segment.flush.threshold.time": "3600000"  
+      }]  
+    },
+    
         "transformConfigs": [
-            {"columnName": "unit_id", "transformFunction": "jsonPathString(message, '$.unit_id')"},
-            {"columnName": "region_id", "transformFunction": "jsonPathString(message, '$.region_id')"},
-            {"columnName": "supply_level", "transformFunction": "jsonPathString(message, '$.supply_level')"},
-            {"columnName": "projected_supply", "transformFunction": "jsonPathString(message, '$.projected_supply')"},
-            {"columnName": "resupply_feasibility", "transformFunction": "jsonPathString(message, '$.resupply_feasibility')"},
-            {"columnName": "timestamp", "transformFunction": "jsonPathLong(message, '$.timestamp')"}
+            {
+              "columnName": "event_timestamp",
+              "transformFunction": "DATETIMECONVERT(event_time, '1:MILLISECONDS:SIMPLE_DATE_FORMAT:yyyy-MM-dd HH:mm:ss.SSS''Z''', '1:MILLISECONDS:EPOCH', '1:MILLISECONDS')"
+            }
         ]
-    }
+    },
+  "metadata": {
+    "customConfigs": {}
+  }
 }

@@ -2,7 +2,7 @@
   "tableName": "weapons_cdc",
   "tableType": "REALTIME",
   "segmentsConfig": {
-    "timeColumnName": "ingest_timestamp_millis",
+    "timeColumnName": "ingest_timestamp",
     "timeType": "MILLISECONDS",
     "schemaName": "weapons_cdc",
     "retentionTimeUnit": "DAYS",
@@ -22,7 +22,7 @@
     "streamIngestionConfig": {
       "streamConfigMaps": [{  
         "streamType": "kafka",  
-        "stream.kafka.topic.name": "jadc2_unwrap.raw.weapons",  
+        "stream.kafka.topic.name": "jadc2.raw.weapons",  
         "stream.kafka.broker.list": "kafka:9092",  
         "stream.kafka.consumer.factory.class.name": "org.apache.pinot.plugin.stream.kafka20.KafkaConsumerFactory",  
         "stream.kafka.consumer.prop.auto.offset.reset": "smallest",  
@@ -36,8 +36,44 @@
     "transformConfigs": [
  
       {
-        "columnName": "ingest_timestamp_millis",
-        "transformFunction": "DATETIMECONVERT(ingest_timestamp, '1:MILLISECONDS:SIMPLE_DATE_FORMAT:yyyy-MM-dd''T''HH:mm:ss.SSSSSS''Z''', '1:MILLISECONDS:EPOCH', '1:MILLISECONDS')"
+        "columnName": "id",
+        "transformFunction": "JSONPATHSTRING(after, '$.id')"
+      },
+      {
+        "columnName": "unit_id",
+        "transformFunction": "JSONPATHSTRING(after, '$.unit_id')"
+      },
+      {
+        "columnName": "name",
+        "transformFunction": "JSONPATHSTRING(after, '$.name')"
+      },
+      {
+        "columnName": "type",
+        "transformFunction": "JSONPATHSTRING(after, '$.type')"
+      },
+      {
+        "columnName": "effective_domain",
+        "transformFunction": "JSONPATHSTRING(after, '$.effective_domain')"
+      },
+      {
+        "columnName": "src",
+        "transformFunction": "JSONPATHSTRING(after, '$.src')"
+      },
+      {
+        "columnName": "range_km",
+        "transformFunction": "JSONPATHSTRING(after, '$.range_km')"
+      },
+      {
+        "columnName": "hit_probability",
+        "transformFunction": "JSONPATHSTRING(after, '$.hit_probability')"
+      },
+      {
+        "columnName": "speed_kmh",
+        "transformFunction": "JSONPATHSTRING(after, '$.speed_kmh')"
+      },
+      {
+        "columnName": "ingest_timestamp",
+        "transformFunction": "DATETIMECONVERT(JSONPATHSTRING(after, '$.ingest_timestamp'), '1:MILLISECONDS:SIMPLE_DATE_FORMAT:yyyy-MM-dd''T''HH:mm:ss.SSSSSS''Z''', '1:MILLISECONDS:EPOCH', '1:MILLISECONDS')"
       }
     ]
   },

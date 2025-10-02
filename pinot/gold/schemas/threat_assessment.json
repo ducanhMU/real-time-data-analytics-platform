@@ -3,23 +3,16 @@
   "dimensionFieldSpecs": [
     {"name": "target_id", "dataType": "STRING"},
     {"name": "region_id", "dataType": "STRING"},
-    {"name": "iff_status", "dataType": "STRING"}
+    {"name": "iff_status", "dataType": "STRING"},
+     {"name": "predicted_threat", "dataType": "STRING"}
   ],
   "metricFieldSpecs": [
     {"name": "adjusted_confidence", "dataType": "BIG_DECIMAL"},
     {"name": "distance_km", "dataType": "BIG_DECIMAL"},
     {"name": "response_time_sec", "dataType": "BIG_DECIMAL"}
   ],
-  "timeFieldSpec": {
-    "name": "timestamp",
-    "dataType": "TIMESTAMP",
-    "incomingGranularitySpec": {
-      "dataType": "MILLISECONDS",
-      "timeFormat": "1:MILLISECONDS:EPOCH",
-      "timeUnit": "MILLISECONDS"
-    }
-  },
-  "singleValueFieldSpecs": [
-    {"name": "predicted_threat", "dataType": "STRING"}
+  "dateTimeFieldSpecs": [
+      {"name": "event_timestamp","dataType": "TIMESTAMP",
+      "format": "TIMESTAMP","granularity":"1:MILLISECONDS"}
   ]
 }

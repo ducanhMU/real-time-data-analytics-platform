@@ -2,7 +2,7 @@
   "tableName": "commands_cdc",
   "tableType": "REALTIME",
   "segmentsConfig": {
-    "timeColumnName": "event_time_millis",
+    "timeColumnName": "event_time",
     "timeType": "MILLISECONDS",
     "schemaName": "commands_cdc",
     "retentionTimeUnit": "DAYS",
@@ -19,7 +19,7 @@
     "streamIngestionConfig": {
       "streamConfigMaps": [{  
         "streamType": "kafka",  
-        "stream.kafka.topic.name": "jadc2_unwrap.raw.commands",  
+        "stream.kafka.topic.name": "jadc2.raw.commands",  
         "stream.kafka.broker.list": "kafka:9092",  
         "stream.kafka.consumer.factory.class.name": "org.apache.pinot.plugin.stream.kafka20.KafkaConsumerFactory",  
         "stream.kafka.consumer.prop.auto.offset.reset": "smallest",  
@@ -31,13 +31,38 @@
       }]  
     },
     "transformConfigs": [
-     {
-        "columnName": "event_time_millis",
-        "transformFunction": "DATETIMECONVERT(event_time, '1:MILLISECONDS:SIMPLE_DATE_FORMAT:yyyy-MM-dd''T''HH:mm:ss.SSSSSS''Z''', '1:MILLISECONDS:EPOCH', '1:MILLISECONDS')"
+    
+      {
+        "columnName": "id",
+        "transformFunction": "JSONPATHSTRING(after, '$.id')"
       },
       {
-        "columnName": "ingest_timestamp_millis",
-        "transformFunction": "DATETIMECONVERT(ingest_timestamp, '1:MILLISECONDS:SIMPLE_DATE_FORMAT:yyyy-MM-dd''T''HH:mm:ss.SSSSSS''Z''', '1:MILLISECONDS:EPOCH', '1:MILLISECONDS')"
+        "columnName": "alert_id",
+        "transformFunction": "JSONPATHSTRING(after, '$.alert_id')"
+      },
+      {
+        "columnName": "unit_id",
+        "transformFunction": "JSONPATHSTRING(after, '$.unit_id')"
+      },
+      {
+        "columnName": "user_id",
+        "transformFunction": "JSONPATHSTRING(after, '$.user_id')"
+      },
+      {
+        "columnName": "action",
+        "transformFunction": "JSONPATHSTRING(after, '$.action')"
+      },
+      {
+        "columnName": "src",
+        "transformFunction": "JSONPATHSTRING(after, '$.src')"
+      },
+     {
+        "columnName": "event_time",
+        "transformFunction": "DATETIMECONVERT(JSONPATHSTRING(after, '$.event_time'), '1:MILLISECONDS:SIMPLE_DATE_FORMAT:yyyy-MM-dd''T''HH:mm:ss.SSSSSS''Z''', '1:MILLISECONDS:EPOCH', '1:MILLISECONDS')"
+      },
+      {
+        "columnName": "ingest_timestamp",
+        "transformFunction": "DATETIMECONVERT(JSONPATHSTRING(after, '$.ingest_timestamp'), '1:MILLISECONDS:SIMPLE_DATE_FORMAT:yyyy-MM-dd''T''HH:mm:ss.SSSSSS''Z''', '1:MILLISECONDS:EPOCH', '1:MILLISECONDS')"
       }
   ]
 

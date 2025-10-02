@@ -1,6 +1,7 @@
 {
   "schemaName": "alerts_cdc",
   "dimensionFieldSpecs": [
+  
     {"name": "id", "dataType": "STRING"},
     {"name": "detection_id", "dataType": "STRING"},
     {"name": "status", "dataType": "STRING"},
@@ -11,13 +12,13 @@
   "metricFieldSpecs": [],
   "dateTimeFieldSpecs": [
     {
-      "name": "created_at_millis",
+      "name": "created_at",
       "dataType": "TIMESTAMP",
       "format": "TIMESTAMP",
       "granularity": "1:MILLISECONDS"
     },
     {
-      "name": "ingest_timestamp_millis",
+      "name": "ingest_timestamp",
       "dataType": "TIMESTAMP",
       "format": "TIMESTAMP",
       "granularity": "1:MILLISECONDS"

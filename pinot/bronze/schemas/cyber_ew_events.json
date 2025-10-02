@@ -1,6 +1,7 @@
 {
   "schemaName": "cyber_ew_events_cdc",
   "dimensionFieldSpecs": [
+   
     {"name": "id", "dataType": "STRING"},
     {"name": "source_id", "dataType": "STRING"},
     {"name": "target_sensor_id", "dataType": "STRING"},
@@ -12,13 +13,13 @@
   "metricFieldSpecs": [],
   "dateTimeFieldSpecs": [
     {
-      "name": "event_time_millis",
+      "name": "event_time",
       "dataType": "TIMESTAMP",
       "format": "TIMESTAMP",
       "granularity": "1:MILLISECONDS"
     },
     {
-      "name": "ingest_timestamp_millis",
+      "name": "ingest_timestamp",
      "dataType": "TIMESTAMP",
       "format": "TIMESTAMP",
       "granularity": "1:MILLISECONDS"

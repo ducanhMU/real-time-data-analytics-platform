@@ -2,36 +2,46 @@
   "tableName": "gold_alerts_with_commands",
   "tableType": "REALTIME",
   "segmentsConfig": {
-    "timeColumnName": "timestamp",
+    "timeColumnName": "event_timestamp",
     "timeType": "MILLISECONDS",
+    "schemaName": "gold_alerts_with_commands",
+    "retentionTimeUnit": "DAYS",
+    "retentionTimeValue": "30",
+    "segmentPushType": "APPEND",
+    "segmentAssignmentStrategy": "BalanceNumSegmentAssignmentStrategy",
     "replicasPerPartition": "1"
   },
+  "tenants": {
+    "broker": "DefaultTenant",
+    "server": "DefaultTenant"
+  },
   "tableIndexConfig": {
-    "loadMode": "MMAP",
-    "realtime.segment.flush.threshold.rows": "50000",
-    "streamConfigs": {
-      "streamType": "kafka",
-      "stream.kafka.topic.name": "gold.alerts_with_commands",
-      "stream.kafka.bootstrap.servers": "kafka:9092",
-      "stream.kafka.consumer.prop.auto.offset.reset": "smallest",
-      "stream.kafka.decoder.class.name": "org.apache.pinot.plugin.stream.kafka20.KafkaJSONMessageDecoder"
-    },
-
-    "invertedIndexColumns": ["alert_id", "detection_id", "region_id", "user_id"],
-    "sortedColumn": "timestamp",
-    "rangeIndexColumns": [],
-    "textIndexColumns": ["action"]
+    "loadMode": "MMAP"
   },
   "ingestionConfig": {
+    "streamIngestionConfig": {
+      "streamConfigMaps": [{  
+        "streamType": "kafka",  
+        "stream.kafka.topic.name": "jadc2.gold.alerts_with_commands",  
+        "stream.kafka.broker.list": "kafka:9092",  
+        "stream.kafka.consumer.factory.class.name": "org.apache.pinot.plugin.stream.kafka20.KafkaConsumerFactory",  
+        "stream.kafka.consumer.prop.auto.offset.reset": "smallest",  
+        "stream.kafka.consumer.type": "lowLevel",  
+        "stream.kafka.consumer.group.id": "pinot",  
+        "stream.kafka.decoder.class.name": "org.apache.pinot.plugin.inputformat.json.JSONMessageDecoder",  
+        "realtime.segment.flush.threshold.segment.rows": "500000",  
+        "realtime.segment.flush.threshold.time": "3600000"  
+      }]  
+    },
     "transformConfigs": [
-      {"columnName": "alert_id", "transformFunction": "jsonPathString(message, '$.alert_id')"},
-      {"columnName": "detection_id", "transformFunction": "jsonPathString(message, '$.detection_id')"},
-      {"columnName": "region_id", "transformFunction": "jsonPathString(message, '$.region_id')"},
-      {"columnName": "threat_level", "transformFunction": "jsonPathString(message, '$.threat_level')"},
-      {"columnName": "command_id", "transformFunction": "jsonPathString(message, '$.command_id')"},
-      {"columnName": "action", "transformFunction": "jsonPathString(message, '$.action')"},
-      {"columnName": "user_id", "transformFunction": "jsonPathString(message, '$.user_id')"},
-      {"columnName": "timestamp", "transformFunction": "jsonPathLong(message, '$.timestamp')"}
+  
+      {
+        "columnName": "event_timestamp",
+        "transformFunction": "DATETIMECONVERT(event_time, '1:MILLISECONDS:SIMPLE_DATE_FORMAT:yyyy-MM-dd HH:mm:ss.SSS''Z''', '1:MILLISECONDS:EPOCH', '1:MILLISECONDS')"
+      }
     ]
+  },
+  "metadata": {
+    "customConfigs": {}
   }
 }

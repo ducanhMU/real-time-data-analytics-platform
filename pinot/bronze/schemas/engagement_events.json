@@ -1,6 +1,7 @@
 {
   "schemaName": "engagement_events_cdc",
   "dimensionFieldSpecs": [
+    
     {
       "name": "id",
       "dataType": "STRING"
@@ -36,13 +37,13 @@
   ],
   "dateTimeFieldSpecs": [
     {
-      "name": "event_time_millis",
+      "name": "event_time",
       "dataType": "TIMESTAMP",
       "format": "TIMESTAMP",
       "granularity": "1:MILLISECONDS"
     },
     {
-      "name": "ingest_timestamp_millis",
+      "name": "ingest_timestamp",
       "dataType": "TIMESTAMP",
       "format": "TIMESTAMP",
       "granularity": "1:MILLISECONDS"

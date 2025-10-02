@@ -1,6 +1,7 @@
 {
   "schemaName": "targets_cdc",
   "dimensionFieldSpecs": [
+   
     {"name": "id", "dataType": "STRING"},
     {"name": "target_id", "dataType": "STRING"},
     {"name": "target_type", "dataType": "STRING"},
@@ -14,7 +15,7 @@
   "metricFieldSpecs": [],
   "dateTimeFieldSpecs": [
     {
-      "name": "ingest_timestamp_millis",
+      "name": "ingest_timestamp",
      "dataType": "TIMESTAMP",
       "format": "TIMESTAMP",
       "granularity": "1:MILLISECONDS"

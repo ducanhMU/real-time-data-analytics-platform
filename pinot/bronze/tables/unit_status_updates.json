@@ -2,7 +2,7 @@
   "tableName": "unit_status_updates_cdc",
   "tableType": "REALTIME",
   "segmentsConfig": {
-    "timeColumnName": "event_time_millis",
+    "timeColumnName": "event_time",
     "timeType": "MILLISECONDS",
     "schemaName": "unit_status_updates_cdc",
     "retentionTimeUnit": "DAYS",
@@ -22,7 +22,7 @@
     "streamIngestionConfig": {
       "streamConfigMaps": [{  
         "streamType": "kafka",  
-        "stream.kafka.topic.name": "jadc2_unwrap.raw.unit_status_updates",  
+        "stream.kafka.topic.name": "jadc2.raw.unit_status_updates",  
         "stream.kafka.broker.list": "kafka:9092",  
         "stream.kafka.consumer.factory.class.name": "org.apache.pinot.plugin.stream.kafka20.KafkaConsumerFactory",  
         "stream.kafka.consumer.prop.auto.offset.reset": "smallest",  
@@ -34,13 +34,50 @@
       }]  
     },
     "transformConfigs": [
-    {
-        "columnName": "event_time_millis",
-        "transformFunction": "DATETIMECONVERT(event_time, '1:MILLISECONDS:SIMPLE_DATE_FORMAT:yyyy-MM-dd''T''HH:mm:ss.SSSSSS''Z''', '1:MILLISECONDS:EPOCH', '1:MILLISECONDS')"
+      {
+        "columnName": "id",
+        "transformFunction": "JSONPATHSTRING(after, '$.id')"
+      },
+    
+      {
+        "columnName": "unit_id",
+        "transformFunction": "JSONPATHSTRING(after, '$.unit_id')"
       },
       {
-        "columnName": "ingest_timestamp_millis",
-        "transformFunction": "DATETIMECONVERT(ingest_timestamp, '1:MILLISECONDS:SIMPLE_DATE_FORMAT:yyyy-MM-dd''T''HH:mm:ss.SSSSSS''Z''', '1:MILLISECONDS:EPOCH', '1:MILLISECONDS')"
+        "columnName": "region_id",
+        "transformFunction": "JSONPATHSTRING(after, '$.region_id')"
+      },
+      {
+        "columnName": "status",
+        "transformFunction": "JSONPATHSTRING(after, '$.status')"
+      },
+      {
+        "columnName": "src",
+        "transformFunction": "JSONPATHSTRING(after, '$.src')"
+      },
+      {
+        "columnName": "lat",
+        "transformFunction": "JSONPATHSTRING(after, '$.lat')"
+      },
+      {
+        "columnName": "lon",
+        "transformFunction": "JSONPATHSTRING(after, '$.lon')"
+      },
+      {
+        "columnName": "health_percent",
+        "transformFunction": "JSONPATHSTRING(after, '$.health_percent')"
+      },
+      {
+        "columnName": "max_range_km",
+        "transformFunction": "JSONPATHSTRING(after, '$.max_range_km')"
+      },
+     {
+        "columnName": "event_time",
+        "transformFunction": "DATETIMECONVERT(JSONPATHSTRING(after, '$.event_time'), '1:MILLISECONDS:SIMPLE_DATE_FORMAT:yyyy-MM-dd''T''HH:mm:ss.SSSSSS''Z''', '1:MILLISECONDS:EPOCH', '1:MILLISECONDS')"
+      },
+      {
+        "columnName": "ingest_timestamp",
+        "transformFunction": "DATETIMECONVERT(JSONPATHSTRING(after, '$.ingest_timestamp'), '1:MILLISECONDS:SIMPLE_DATE_FORMAT:yyyy-MM-dd''T''HH:mm:ss.SSSSSS''Z''', '1:MILLISECONDS:EPOCH', '1:MILLISECONDS')"
       }
     ]
   },

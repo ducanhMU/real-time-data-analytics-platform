@@ -5,22 +5,15 @@
     {"name": "attacker_id", "dataType": "STRING"},
     {"name": "target_id", "dataType": "STRING"},
     {"name": "weapon_id", "dataType": "STRING"},
-    {"name": "region_id", "dataType": "STRING"}
+    {"name": "region_id", "dataType": "STRING"},
+     {"name": "result", "dataType": "STRING"}
   ],
   "metricFieldSpecs": [
     {"name": "adjusted_hit_probability", "dataType": "BIG_DECIMAL"},
     {"name": "impact_factor", "dataType": "BIG_DECIMAL"}
   ],
-  "singleValueFieldSpecs": [
-    {"name": "result", "dataType": "STRING"}
-  ],
-  "timeFieldSpec": {
-    "name": "timestamp",
-    "dataType": "TIMESTAMP",
-    "incomingGranularitySpec": {
-      "dataType": "MILLISECONDS",
-      "timeFormat": "1:MILLISECONDS:EPOCH",
-      "timeUnit": "MILLISECONDS"
-    }
-  }
+  "dateTimeFieldSpecs": [
+      {"name": "event_timestamp","dataType": "TIMESTAMP",
+      "format": "TIMESTAMP","granularity":"1:MILLISECONDS"}
+  ]
 }
