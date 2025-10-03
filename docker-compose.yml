@@ -368,7 +368,7 @@ services:
       - ./pinot:/opt/pinot/configs
     environment:  
       # Enable Basic Authentication for Controller  
-      - controller.admin.access.control.factory.class=org.apache.pinot.controller.api.access.BasicAuthAccessControlFactory
+      - controller.admin.access.control.factory.clas 10+s=org.apache.pinot.controller.api.access.BasicAuthAccessControlFactory
       - controller.admin.access.control.principals=admin,superset
       - controller.admin.access.control.principals.admin.password=password
       - controller.admin.access.control.principals.superset.password=password
